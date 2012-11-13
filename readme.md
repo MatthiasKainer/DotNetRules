@@ -9,7 +9,7 @@ Using a rule engine is fun, but most of the engines out there required a lot of 
 
     myObject.ApplyPolicies();
 
-## A policy: 
+## A simple policy: 
 
     using DotNetRules.Runtime;
     [Policy(typeof(MyObject))]
@@ -22,3 +22,27 @@ Using a rule engine is fun, but most of the engines out there required a lot of 
             Subject.Data = Packaging.Compress(Subject.Data);
         };
     }
+
+## A more advanced policy: 
+
+    [Policy(typeof(Capability.Event), typeof(Guid))]
+    class EventWriteAccess : RelationPolicyBase<Capability.Event, Guid>
+    {
+        static bool _allowed = false;
+
+        Establish _context = target =>
+        {
+            _allowed = false;
+        };
+
+        Given _userCanWrite = () => Source.Owner == Target ||
+                                    Source.AdministatorsId.Contains(Target) ||
+                                    Source.EditorsId.Contains(Target);
+    								
+		Or _userIsPlattformAdmin = () => Plattform.IsAdmin(Target);
+
+        Then _grantPermission = () => _allowed = true;
+
+        Return<bool> _return = () => _allowed;
+    }
+
