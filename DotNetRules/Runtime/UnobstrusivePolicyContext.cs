@@ -88,9 +88,7 @@ namespace DotNetRules.Runtime
 
         public bool Or()
         {
-            if (!_orClauses.Any())
-                return _wasGiven;
-            return _orClauses.InvokeAll();
+            return !_orClauses.Any() ? _wasGiven : _orClauses.InvokeAll();
         }
 
         public void Then()

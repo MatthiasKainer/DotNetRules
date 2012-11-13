@@ -103,7 +103,7 @@ namespace DotNetRules
                 .Where(_ => !policies.Any() || policies.Any(type1 => type1 == _.CurrentPolicy)))
             {
                 mon.Establish(source, target);
-                if (mon.Given())
+                if (mon.Given() || mon.Or())
                 {
                     executionTrace.Called++;
                     executionTrace.By.Enqueue(mon.CurrentPolicy);
@@ -168,7 +168,7 @@ namespace DotNetRules
                 .Where(_ => !policies.Any() || policies.Any(type1 => type1 == _.CurrentPolicy)))
             {
                 mon.EstablishMore(values);
-                if (mon.Given())
+                if (mon.Given() || mon.Or())
                 {
                     target.Called++;
                     target.By.Enqueue(mon.CurrentPolicy);
