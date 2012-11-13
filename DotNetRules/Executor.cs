@@ -153,6 +153,10 @@ namespace DotNetRules
 
         public static ExecutionTrace<TReturn> Apply<TReturn>(Assembly policyLocation, IEnumerable<Type> policies, params dynamic[] values)
         {
+            if (policies == null)
+            {
+                policies = Enumerable.Empty<Type>();
+            }
             var target = new ExecutionTrace<TReturn>();
             var types = values.Select(_ => (Type)_.GetType()).ToArray();
             if (policyLocation == null)
