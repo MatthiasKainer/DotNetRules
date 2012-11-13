@@ -11,6 +11,7 @@ namespace DotNetRules.Runtime
         readonly Establish _establishClause;
         readonly Finally _finally;
         private readonly IEnumerable<Given> _givenClauses;
+        private readonly IEnumerable<Or> _orClauses;
         private readonly IEnumerable<Then> _thenClauses;
         bool _wasGiven;
 
@@ -27,6 +28,7 @@ namespace DotNetRules.Runtime
             _policy = constructorInfo.Invoke(null);
             _establishClause = Helper.GetFieldValuesFor<Establish>(_policy, policy.GetInstanceFieldsOfType<Establish>()).FirstOrDefault();
             _givenClauses = Helper.GetFieldValuesFor<Given>(_policy, policy.GetInstanceFieldsOfType<Given>());
+            _orClauses = Helper.GetFieldValuesFor<Or>(_policy, policy.GetInstanceFieldsOfType<Or>());
             _thenClauses = Helper.GetFieldValuesFor<Then>(_policy, policy.GetInstanceFieldsOfType<Then>());
             _finally = Helper.GetFieldValuesFor<Finally>(_policy, policy.GetInstanceFieldsOfType<Finally>()).FirstOrDefault();
         }
@@ -82,6 +84,13 @@ namespace DotNetRules.Runtime
         {
             _wasGiven = _givenClauses.InvokeAll();
             return _wasGiven;
+        }
+
+        public bool Or()
+        {
+            if (!_orClauses.Any())
+                return _wasGiven;
+            return _orClauses.InvokeAll();
         }
 
         public void Then()

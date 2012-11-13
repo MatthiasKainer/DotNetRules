@@ -49,6 +49,7 @@
     <Compile Include="Runtime\Finally.cs" />
     <Compile Include="Runtime\Given.cs" />
     <Compile Include="Runtime\Helper.cs" />
+    <Compile Include="Runtime\Or.cs" />
     <Compile Include="Runtime\PolicyAttribute.cs" />
     <Compile Include="Runtime\PolicyBase.cs" />
     <Compile Include="Runtime\RelationPolicyBase.cs" />

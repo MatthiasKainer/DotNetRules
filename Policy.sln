@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Policy", "Policy\Policy.csproj", "{B997F135-BB58-4A2B-A131-C52C33AD43E6}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetRules", "DotNetRules\DotNetRules.csproj", "{19FF278C-8506-42F1-A766-9C958E716AFB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetRules.Tests", "DotNetRules.Tests\DotNetRules.Tests.csproj", "{999C6D45-C14F-42EF-805C-1F9411BBD0A9}"
@@ -15,10 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B997F135-BB58-4A2B-A131-C52C33AD43E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B997F135-BB58-4A2B-A131-C52C33AD43E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B997F135-BB58-4A2B-A131-C52C33AD43E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B997F135-BB58-4A2B-A131-C52C33AD43E6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{19FF278C-8506-42F1-A766-9C958E716AFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{19FF278C-8506-42F1-A766-9C958E716AFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19FF278C-8506-42F1-A766-9C958E716AFB}.Release|Any CPU.ActiveCfg = Release|Any CPU

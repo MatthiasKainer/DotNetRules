@@ -64,6 +64,11 @@ namespace DotNetRules.Runtime
             return queueTypes;
         }
 
+        public static bool InvokeAll(this IEnumerable<Or> invokeable)
+        {
+            return invokeable.AllNonNull().Select<Or, Func<bool>>(x => x.Invoke).InvokeAll();
+        }
+
         public static bool InvokeAll(this IEnumerable<Given> invokeable)
         {
             return invokeable.AllNonNull().Select<Given, Func<bool>>(x => x.Invoke).InvokeAll();

@@ -26,9 +26,7 @@ namespace DotNetRules.Tests.AcceptanceTest
 
             It should_fullfill_the_condition = () => _result.WasConditionMetFor(typeof(APolicyForASingleObject));
 
-            It should_not_throw_an_exception = () => {
-                                                         exception.ShouldBeNull();
-            };
+            It should_not_throw_an_exception = () => exception.ShouldBeNull();
         }
 
         class When_TargetDomainObject_is_invalid

@@ -63,10 +63,12 @@
     <Compile Include="AcceptanceTest\Enviroment\Policy\APolicyForASingleObject.cs" />
     <Compile Include="AcceptanceTest\Enviroment\Policy\ExamplePolicy.cs" />
     <Compile Include="AcceptanceTest\Enviroment\Policy\InvalidStateException.cs" />
+    <Compile Include="AcceptanceTest\Enviroment\Policy\PolicyWithOr.cs" />
     <Compile Include="AcceptanceTest\Enviroment\Policy\PolicyWithReturnValue.cs" />
     <Compile Include="AcceptanceTest\Enviroment\Policy\VersionPolicy.cs" />
     <Compile Include="AcceptanceTest\Enviroment\TargetDomainObject.cs" />
     <Compile Include="AcceptanceTest\GetReturnValue.cs" />
+    <Compile Include="AcceptanceTest\OrCombination.cs" />
     <Compile Include="AcceptanceTest\RunAllPolicies.cs" />
     <Compile Include="AcceptanceTest\RunSpecificPolicy.cs" />
     <Compile Include="AcceptanceTest\SinglePolicy.cs" />
