@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using DotNetRules.Runtime;
 
-namespace DotNetRules.Tests.AcceptanceTest.Enviroment.Policy
+namespace DotNetRules.Tests.AcceptanceTest.Enviroment.Policy.Manual
 {
     [Policy(typeof(TargetDomainObject), typeof(LegacyItem), AutoExecute= false)]
-    class PolicyWithReturnValue : RelationPolicyBase<LegacyItem, TargetDomainObject>
+    class PolicyWithReturnValueThatMapsSourceNumberToTargetInteger : RelationPolicyBase<LegacyItem, TargetDomainObject>
     {
         Given isTrue = () => !Source.Number.Equals(Target.Integer.ToString());
 

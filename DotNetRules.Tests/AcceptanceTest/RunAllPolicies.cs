@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using DotNetRules.Tests.AcceptanceTest.Enviroment.Policy.Automatic;
 using Machine.Specifications;
 using DotNetRules.Tests.AcceptanceTest.Enviroment;
 using DotNetRules.Tests.AcceptanceTest.Enviroment.Policy;
@@ -28,7 +29,7 @@ namespace DotNetRules.Tests.AcceptanceTest
 
             It should_have_executed_one_policy = () => _result.Called.ShouldEqual(1);
 
-            It should_have_executed_the_ExamplePolicy = () => _result.By.All(_ => _ == typeof(ExamplePolicy)).ShouldBeTrue();
+            It should_have_executed_the_ExamplePolicy = () => _result.By.All(_ => _ == typeof(PolicyThatMapsTheSourceTextToAnArray)).ShouldBeTrue();
         }
 
         class When_two_values_are_different
@@ -50,12 +51,12 @@ namespace DotNetRules.Tests.AcceptanceTest
 
             It should_have_executed_two_policies = () => _result.Called.ShouldEqual(2);
 
-            It should_have_executed_the_ADependendPolicy = () => _result.By.Any(_ => _ == typeof(ADependendPolicy)).ShouldBeTrue();
+            It should_have_executed_the_ADependendPolicy = () => _result.By.Any(_ => _ == typeof(PolicyThatWaitsForPolicyThatMapsTheSourceTextToAnArray)).ShouldBeTrue();
 
-            It should_have_executed_the_ExamplePolicy = () => _result.By.Any(_ => _ == typeof(ExamplePolicy)).ShouldBeTrue();
+            It should_have_executed_the_ExamplePolicy = () => _result.By.Any(_ => _ == typeof(PolicyThatMapsTheSourceTextToAnArray)).ShouldBeTrue();
 
             It should_have_executed_the_ExamplePolicy_first =
-                () => _result.By.Peek().ShouldEqual(typeof(ExamplePolicy));
+                () => _result.By.Peek().ShouldEqual(typeof(PolicyThatMapsTheSourceTextToAnArray));
         }
     }
 }

@@ -1,10 +1,10 @@
 using System;
 using DotNetRules.Runtime;
 
-namespace DotNetRules.Tests.AcceptanceTest.Enviroment.Policy
+namespace DotNetRules.Tests.AcceptanceTest.Enviroment.Policy.Automatic
 {
     [Policy(typeof(TargetDomainObject), typeof(LegacyItem))]
-    internal class VersionPolicy : RelationPolicyBase<LegacyItem, TargetDomainObject>
+    internal class PolicyThatComparesTheVersion : RelationPolicyBase<LegacyItem, TargetDomainObject>
     {
         Given versionsAreNotTheSame = () =>
                                       Convert.ToInt32((string) Source.Version) != Target.Version;

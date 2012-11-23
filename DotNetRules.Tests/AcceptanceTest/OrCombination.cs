@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DotNetRules.Tests.AcceptanceTest.Enviroment;
-using DotNetRules.Tests.AcceptanceTest.Enviroment.Policy;
+﻿using DotNetRules.Tests.AcceptanceTest.Enviroment;
+using DotNetRules.Tests.AcceptanceTest.Enviroment.Policy.Manual;
 using Machine.Specifications;
 
 namespace DotNetRules.Tests.AcceptanceTest
@@ -23,7 +19,7 @@ namespace DotNetRules.Tests.AcceptanceTest
                 _targetDomainObject = new TargetDomainObject { StringArray = new string[0], Integer = 0 };
             };
 
-            Because of = () => _result = _legacyItem.ApplyPoliciesFor(_targetDomainObject, policies: new[] { typeof(PolicyWithOr) });
+            Because of = () => _result = _legacyItem.ApplyPoliciesFor(_targetDomainObject, policies: new[] { typeof(PolicyWithOrThatSetsSourceNumberToOne) });
 
             It should_have_executed_the_policy_once = () => _result.Called.ShouldEqual(1);
 
@@ -42,7 +38,7 @@ namespace DotNetRules.Tests.AcceptanceTest
                 _targetDomainObject = new TargetDomainObject { StringArray = new string[0], Integer = 0 };
             };
 
-            Because of = () => _result = _legacyItem.ApplyPoliciesFor(_targetDomainObject, policies: new[] { typeof(PolicyWithOr) });
+            Because of = () => _result = _legacyItem.ApplyPoliciesFor(_targetDomainObject, policies: new[] { typeof(PolicyWithOrThatSetsSourceNumberToOne) });
 
             It should_not_have_executed_the_policy = () => _result.Called.ShouldEqual(0);
 

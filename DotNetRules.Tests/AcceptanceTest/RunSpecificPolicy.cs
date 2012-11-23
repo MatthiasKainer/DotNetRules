@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DotNetRules.Tests.AcceptanceTest.Enviroment.Policy.Automatic;
 using Machine.Specifications;
 using DotNetRules.Tests.AcceptanceTest.Enviroment;
 using DotNetRules.Tests.AcceptanceTest.Enviroment.Policy;
@@ -22,11 +23,11 @@ namespace DotNetRules.Tests.AcceptanceTest
                 _targetDomainObject = new TargetDomainObject { StringArray = new string[0], Integer = 0 };
             };
 
-            Because of = () => _result = Executor.Apply(_legacyItem, _targetDomainObject, policies: new[] { typeof(ExamplePolicy) });
+            Because of = () => _result = Executor.Apply(_legacyItem, _targetDomainObject, policies: new[] { typeof(PolicyThatMapsTheSourceTextToAnArray) });
 
             It should_have_executed_one_policy = () => _result.Called.ShouldEqual(1);
 
-            It should_have_executed_the_ExamplePolicy = () => _result.By.All(_ => _ == typeof(ExamplePolicy)).ShouldBeTrue();
+            It should_have_executed_the_ExamplePolicy = () => _result.By.All(_ => _ == typeof(PolicyThatMapsTheSourceTextToAnArray)).ShouldBeTrue();
         }
     }
 }

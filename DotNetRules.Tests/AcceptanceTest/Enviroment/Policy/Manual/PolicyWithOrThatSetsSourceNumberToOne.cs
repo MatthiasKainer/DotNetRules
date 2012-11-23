@@ -1,10 +1,9 @@
-﻿using System;
 using DotNetRules.Runtime;
 
-namespace DotNetRules.Tests.AcceptanceTest.Enviroment.Policy
+namespace DotNetRules.Tests.AcceptanceTest.Enviroment.Policy.Manual
 {
     [Policy(typeof(TargetDomainObject), typeof(LegacyItem), AutoExecute = false)]
-    class PolicyWithOr : RelationPolicyBase<LegacyItem, TargetDomainObject>
+    class PolicyWithOrThatSetsSourceNumberToOne : RelationPolicyBase<LegacyItem, TargetDomainObject>
     {
         Given numbersAreEqual = () => Source.Number.Equals(Target.Integer.ToString());
 

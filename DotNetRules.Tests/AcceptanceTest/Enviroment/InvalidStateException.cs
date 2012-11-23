@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace DotNetRules.Tests.AcceptanceTest.Enviroment.Policy
+namespace DotNetRules.Tests.AcceptanceTest.Enviroment
 {
     [Serializable]
     public class InvalidStateException : Exception

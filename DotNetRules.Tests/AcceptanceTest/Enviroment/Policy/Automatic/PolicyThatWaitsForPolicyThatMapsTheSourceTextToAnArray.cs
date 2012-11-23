@@ -1,10 +1,10 @@
 using System;
 using DotNetRules.Runtime;
 
-namespace DotNetRules.Tests.AcceptanceTest.Enviroment.Policy
+namespace DotNetRules.Tests.AcceptanceTest.Enviroment.Policy.Automatic
 {
-    [Policy(typeof(TargetDomainObject), typeof(LegacyItem), WaitFor = typeof(ExamplePolicy))]
-    class ADependendPolicy : RelationPolicyBase<LegacyItem, TargetDomainObject>
+    [Policy(typeof(TargetDomainObject), typeof(LegacyItem), WaitFor = typeof(PolicyThatMapsTheSourceTextToAnArray))]
+    class PolicyThatWaitsForPolicyThatMapsTheSourceTextToAnArray : RelationPolicyBase<LegacyItem, TargetDomainObject>
     {
         Given isTrue = () => !Source.Number.Equals(Target.Integer.ToString());
 

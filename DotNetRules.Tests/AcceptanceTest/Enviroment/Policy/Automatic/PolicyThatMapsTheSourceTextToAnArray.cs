@@ -1,10 +1,10 @@
 using System;
 using DotNetRules.Runtime;
 
-namespace DotNetRules.Tests.AcceptanceTest.Enviroment.Policy
+namespace DotNetRules.Tests.AcceptanceTest.Enviroment.Policy.Automatic
 {
     [Policy(typeof(TargetDomainObject), typeof(LegacyItem))]
-    class ExamplePolicy : RelationPolicyBase<LegacyItem, TargetDomainObject>
+    class PolicyThatMapsTheSourceTextToAnArray : RelationPolicyBase<LegacyItem, TargetDomainObject>
     {
         Given isTrue = () => !Source.Text.Trim().Equals(string.Join(" ", Target.StringArray));
 

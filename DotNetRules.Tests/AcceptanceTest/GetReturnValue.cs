@@ -1,4 +1,5 @@
-﻿using Machine.Specifications;
+﻿using DotNetRules.Tests.AcceptanceTest.Enviroment.Policy.Manual;
+using Machine.Specifications;
 using DotNetRules.Tests.AcceptanceTest.Enviroment;
 using DotNetRules.Tests.AcceptanceTest.Enviroment.Policy;
 
@@ -19,7 +20,7 @@ namespace DotNetRules.Tests.AcceptanceTest
                 _targetDomainObject = new TargetDomainObject { StringArray = new string[0], Integer = 0 };
             };
 
-            Because of = () => _result = _legacyItem.ApplyPoliciesFor<int, LegacyItem, TargetDomainObject>(_targetDomainObject, policies: new[] { typeof(PolicyWithReturnValue) });
+            Because of = () => _result = _legacyItem.ApplyPoliciesFor<int, LegacyItem, TargetDomainObject>(_targetDomainObject, policies: new[] { typeof(PolicyWithReturnValueThatMapsSourceNumberToTargetInteger) });
 
             It return_value_should_be_300 = () => ShouldExtensionMethods.ShouldEqual(_result, 300);
         }

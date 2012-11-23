@@ -58,21 +58,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcceptanceTest\Enviroment\InvalidStateException.cs" />
     <Compile Include="AcceptanceTest\Enviroment\LegacyItem.cs" />
-    <Compile Include="AcceptanceTest\Enviroment\Policy\ADependendPolicy.cs" />
-    <Compile Include="AcceptanceTest\Enviroment\Policy\APolicyForASingleObject.cs" />
-    <Compile Include="AcceptanceTest\Enviroment\Policy\ExamplePolicy.cs" />
-    <Compile Include="AcceptanceTest\Enviroment\Policy\InvalidStateException.cs" />
-    <Compile Include="AcceptanceTest\Enviroment\Policy\PolicyWithOr.cs" />
-    <Compile Include="AcceptanceTest\Enviroment\Policy\PolicyWithReturnValue.cs" />
-    <Compile Include="AcceptanceTest\Enviroment\Policy\VersionPolicy.cs" />
+    <Compile Include="AcceptanceTest\Enviroment\Policy\Automatic\PolicyThatComparesTheVersion.cs" />
+    <Compile Include="AcceptanceTest\Enviroment\Policy\Automatic\PolicyThatMapsTheSourceTextToAnArray.cs" />
+    <Compile Include="AcceptanceTest\Enviroment\Policy\Automatic\PolicyThatThrowsAnExceptionIfSubjectVersionIsSmallerZero.cs" />
+    <Compile Include="AcceptanceTest\Enviroment\Policy\Automatic\PolicyThatWaitsForPolicyThatMapsTheSourceTextToAnArray.cs" />
+    <Compile Include="AcceptanceTest\Enviroment\Policy\Manual\PolicyWithOrThatSetsSourceNumberToOne.cs" />
+    <Compile Include="AcceptanceTest\Enviroment\Policy\Manual\PolicyWithReturnValueThatMapsSourceNumberToTargetInteger.cs" />
     <Compile Include="AcceptanceTest\Enviroment\TargetDomainObject.cs" />
     <Compile Include="AcceptanceTest\GetReturnValue.cs" />
     <Compile Include="AcceptanceTest\OrCombination.cs" />
     <Compile Include="AcceptanceTest\RunAllPolicies.cs" />
     <Compile Include="AcceptanceTest\RunSpecificPolicy.cs" />
     <Compile Include="AcceptanceTest\SinglePolicy.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -84,6 +83,7 @@
       <Name>UnobstrusivePolicy</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

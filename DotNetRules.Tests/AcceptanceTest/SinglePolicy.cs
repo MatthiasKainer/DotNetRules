@@ -1,4 +1,5 @@
 using System;
+using DotNetRules.Tests.AcceptanceTest.Enviroment.Policy.Automatic;
 using Machine.Specifications;
 using DotNetRules.TestFramework;
 using DotNetRules.Tests.AcceptanceTest.Enviroment;
@@ -8,7 +9,7 @@ namespace DotNetRules.Tests.AcceptanceTest
 {
     // ReSharper disable InconsistentNaming
     // ReSharper disable UnusedMember.Local
-    [Subject("ExamplePolicy")]
+    [Subject("PolicyThatMapsTheSourceTextToAnArray")]
     class SinglePolicy 
     {
         class When_TargetDomainObject_is_valid
@@ -24,7 +25,7 @@ namespace DotNetRules.Tests.AcceptanceTest
 
             Because of = () => exception = Catch.Exception(() => _result = Executor.Apply(_targetDomainObject));
 
-            It should_fullfill_the_condition = () => _result.WasConditionMetFor(typeof(APolicyForASingleObject));
+            It should_fullfill_the_condition = () => _result.WasConditionMetFor(typeof(PolicyThatThrowsAnExceptionIfSubjectVersionIsSmallerZero));
 
             It should_not_throw_an_exception = () => exception.ShouldBeNull();
         }
@@ -53,7 +54,7 @@ namespace DotNetRules.Tests.AcceptanceTest
 
             Establish context = () =>
                                     {
-                                        _testContext = new TestContext(typeof(ExamplePolicy));
+                                        _testContext = new TestContext(typeof(PolicyThatMapsTheSourceTextToAnArray));
                                         _legacyItem = new LegacyItem {Text = "text"};
                                         _targetDomainObject = new TargetDomainObject
                                                                 {StringArray = new string[0]};
@@ -74,7 +75,7 @@ namespace DotNetRules.Tests.AcceptanceTest
 
             Establish context = () =>
             {
-                _testContext = new TestContext(typeof(VersionPolicy));
+                _testContext = new TestContext(typeof(PolicyThatComparesTheVersion));
                 _legacyItem = new LegacyItem {Version = "1"};
                 _targetDomainObject = new TargetDomainObject { Version = 1 };
             };
