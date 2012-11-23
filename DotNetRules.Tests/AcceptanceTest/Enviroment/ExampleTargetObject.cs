@@ -1,6 +1,6 @@
 namespace DotNetRules.Tests.AcceptanceTest.Enviroment
 {
-    class TargetDomainObject
+    class ExampleTargetObject
     {
         public int Version { get; set; }
 
@@ -8,7 +8,7 @@ namespace DotNetRules.Tests.AcceptanceTest.Enviroment
 
         public string[] StringArray { get; set; }
 
-        public TargetDomainObject()
+        public ExampleTargetObject()
         {
             StringArray = new [] { "untouched" };
         }

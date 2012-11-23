@@ -3,8 +3,8 @@ using DotNetRules.Runtime;
 
 namespace DotNetRules.Tests.AcceptanceTest.Enviroment.Policy.Automatic
 {
-    [Policy(typeof(TargetDomainObject), typeof(LegacyItem))]
-    class PolicyThatMapsTheSourceTextToAnArray : RelationPolicyBase<LegacyItem, TargetDomainObject>
+    [Policy(typeof(ExampleTargetObject), typeof(ExampleSourceObject))]
+    class PolicyThatMapsTheSourceTextToAnArray : RelationPolicyBase<ExampleSourceObject, ExampleTargetObject>
     {
         Given isTrue = () => !Source.Text.Trim().Equals(string.Join(" ", Target.StringArray));
 

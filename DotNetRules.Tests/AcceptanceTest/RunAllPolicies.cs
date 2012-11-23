@@ -15,17 +15,17 @@ namespace DotNetRules.Tests.AcceptanceTest
         class When_only_one_value_is_different
         {
             static ExecutionTrace _result;
-            static LegacyItem _legacyItem;
-            static TargetDomainObject _targetDomainObject;
+            static ExampleSourceObject _exampleSourceObject;
+            static ExampleTargetObject _exampleTargetObject;
 
             Establish context = () =>
                 {
-                    _legacyItem = new LegacyItem();
-                    _targetDomainObject = new TargetDomainObject
+                    _exampleSourceObject = new ExampleSourceObject();
+                    _exampleTargetObject = new ExampleTargetObject
                                             {StringArray = new string[0], Integer = 0};
                 };
 
-            Because of = () => _result = Executor.Apply(_legacyItem, _targetDomainObject);
+            Because of = () => _result = Executor.Apply(_exampleSourceObject, _exampleTargetObject);
 
             It should_have_executed_one_policy = () => _result.Called.ShouldEqual(1);
 
@@ -35,18 +35,18 @@ namespace DotNetRules.Tests.AcceptanceTest
         class When_two_values_are_different
         {
             static ExecutionTrace _result;
-            static LegacyItem _legacyItem;
-            static TargetDomainObject _targetDomainObject;
+            static ExampleSourceObject _exampleSourceObject;
+            static ExampleTargetObject _exampleTargetObject;
 
             Establish context = () =>
             {
-                _legacyItem = new LegacyItem { Text = "text", Number = "100" };
-                _targetDomainObject = new TargetDomainObject { StringArray = new string[0], Integer = 0 };
+                _exampleSourceObject = new ExampleSourceObject { Text = "text", Number = "100" };
+                _exampleTargetObject = new ExampleTargetObject { StringArray = new string[0], Integer = 0 };
             };
 
             Because of = () =>
                              {
-                                 _result = Executor.Apply(_legacyItem, _targetDomainObject);
+                                 _result = Executor.Apply(_exampleSourceObject, _exampleTargetObject);
                              };
 
             It should_have_executed_two_policies = () => _result.Called.ShouldEqual(2);

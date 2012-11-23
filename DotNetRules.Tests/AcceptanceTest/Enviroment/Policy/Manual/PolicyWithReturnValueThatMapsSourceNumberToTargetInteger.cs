@@ -3,8 +3,8 @@ using DotNetRules.Runtime;
 
 namespace DotNetRules.Tests.AcceptanceTest.Enviroment.Policy.Manual
 {
-    [Policy(typeof(TargetDomainObject), typeof(LegacyItem), AutoExecute= false)]
-    class PolicyWithReturnValueThatMapsSourceNumberToTargetInteger : RelationPolicyBase<LegacyItem, TargetDomainObject>
+    [Policy(typeof(ExampleTargetObject), typeof(ExampleSourceObject), AutoExecute= false)]
+    class PolicyWithReturnValueThatMapsSourceNumberToTargetInteger : RelationPolicyBase<ExampleSourceObject, ExampleTargetObject>
     {
         Given isTrue = () => !Source.Number.Equals(Target.Integer.ToString());
 

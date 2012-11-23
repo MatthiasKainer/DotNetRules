@@ -3,14 +3,14 @@ using DotNetRules.Runtime;
 
 namespace DotNetRules.Tests.AcceptanceTest.Enviroment.Policy.Automatic
 {
-    [Policy(typeof(TargetDomainObject), typeof(LegacyItem))]
-    internal class PolicyThatComparesTheVersion : RelationPolicyBase<LegacyItem, TargetDomainObject>
+    [Policy(typeof(ExampleTargetObject), typeof(ExampleSourceObject))]
+    internal class PolicyThatComparesTheVersion : RelationPolicyBase<ExampleSourceObject, ExampleTargetObject>
     {
         Given versionsAreNotTheSame = () =>
                                       Convert.ToInt32((string) Source.Version) != Target.Version;
 
         Then updateTheVersion = () => Target.Version = Convert.ToInt32((string) Source.Version);
 
-        Return<LegacyItem> @return = () => Source;
+        Return<ExampleSourceObject> @return = () => Source;
     }
 }

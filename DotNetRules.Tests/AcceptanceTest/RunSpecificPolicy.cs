@@ -14,16 +14,16 @@ namespace DotNetRules.Tests.AcceptanceTest
         class When_only_one_value_is_different
         {
             static ExecutionTrace _result;
-            static LegacyItem _legacyItem;
-            static TargetDomainObject _targetDomainObject;
+            static ExampleSourceObject _exampleSourceObject;
+            static ExampleTargetObject _exampleTargetObject;
 
             Establish context = () =>
             {
-                _legacyItem = new LegacyItem();
-                _targetDomainObject = new TargetDomainObject { StringArray = new string[0], Integer = 0 };
+                _exampleSourceObject = new ExampleSourceObject();
+                _exampleTargetObject = new ExampleTargetObject { StringArray = new string[0], Integer = 0 };
             };
 
-            Because of = () => _result = Executor.Apply(_legacyItem, _targetDomainObject, policies: new[] { typeof(PolicyThatMapsTheSourceTextToAnArray) });
+            Because of = () => _result = Executor.Apply(_exampleSourceObject, _exampleTargetObject, policies: new[] { typeof(PolicyThatMapsTheSourceTextToAnArray) });
 
             It should_have_executed_one_policy = () => _result.Called.ShouldEqual(1);
 

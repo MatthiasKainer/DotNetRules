@@ -2,8 +2,8 @@ using DotNetRules.Runtime;
 
 namespace DotNetRules.Tests.AcceptanceTest.Enviroment.Policy.Automatic
 {
-    [Policy(typeof(TargetDomainObject))]
-    class PolicyThatThrowsAnExceptionIfSubjectVersionIsSmallerZero : PolicyBase<TargetDomainObject>
+    [Policy(typeof(ExampleTargetObject))]
+    class PolicyThatThrowsAnExceptionIfSubjectVersionIsSmallerZero : PolicyBase<ExampleTargetObject>
     {
         Given versionIsLessThenZero = () => Subject.Version < 0;
 

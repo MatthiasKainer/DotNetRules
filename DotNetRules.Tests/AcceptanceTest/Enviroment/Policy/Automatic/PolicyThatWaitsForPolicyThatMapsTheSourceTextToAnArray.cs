@@ -3,8 +3,8 @@ using DotNetRules.Runtime;
 
 namespace DotNetRules.Tests.AcceptanceTest.Enviroment.Policy.Automatic
 {
-    [Policy(typeof(TargetDomainObject), typeof(LegacyItem), WaitFor = typeof(PolicyThatMapsTheSourceTextToAnArray))]
-    class PolicyThatWaitsForPolicyThatMapsTheSourceTextToAnArray : RelationPolicyBase<LegacyItem, TargetDomainObject>
+    [Policy(typeof(ExampleTargetObject), typeof(ExampleSourceObject), WaitFor = typeof(PolicyThatMapsTheSourceTextToAnArray))]
+    class PolicyThatWaitsForPolicyThatMapsTheSourceTextToAnArray : RelationPolicyBase<ExampleSourceObject, ExampleTargetObject>
     {
         Given isTrue = () => !Source.Number.Equals(Target.Integer.ToString());
 

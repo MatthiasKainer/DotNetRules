@@ -1,8 +1,8 @@
 namespace DotNetRules.Tests.AcceptanceTest.Enviroment
 {
-    public class LegacyItem
+    public class ExampleSourceObject
     {
-        public LegacyItem()
+        public ExampleSourceObject()
         {
             Text = "sometext";
             Number = "0";

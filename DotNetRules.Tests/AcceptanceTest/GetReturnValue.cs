@@ -11,16 +11,16 @@ namespace DotNetRules.Tests.AcceptanceTest
         class When_Policy_Is_Specified_Explicitly_As_Policy_With_Return_Value
         {
             static ExecutionTrace<int> _result;
-            static LegacyItem _legacyItem;
-            static TargetDomainObject _targetDomainObject;
+            static ExampleSourceObject _exampleSourceObject;
+            static ExampleTargetObject _exampleTargetObject;
 
             Establish context = () =>
             {
-                _legacyItem = new LegacyItem { Number = "300" };
-                _targetDomainObject = new TargetDomainObject { StringArray = new string[0], Integer = 0 };
+                _exampleSourceObject = new ExampleSourceObject { Number = "300" };
+                _exampleTargetObject = new ExampleTargetObject { StringArray = new string[0], Integer = 0 };
             };
 
-            Because of = () => _result = _legacyItem.ApplyPoliciesFor<int, LegacyItem, TargetDomainObject>(_targetDomainObject, policies: new[] { typeof(PolicyWithReturnValueThatMapsSourceNumberToTargetInteger) });
+            Because of = () => _result = _exampleSourceObject.ApplyPoliciesFor<int, ExampleSourceObject, ExampleTargetObject>(_exampleTargetObject, policies: new[] { typeof(PolicyWithReturnValueThatMapsSourceNumberToTargetInteger) });
 
             It return_value_should_be_300 = () => ShouldExtensionMethods.ShouldEqual(_result, 300);
         }
