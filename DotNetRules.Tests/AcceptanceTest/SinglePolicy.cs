@@ -3,7 +3,6 @@ using DotNetRules.Tests.AcceptanceTest.Enviroment.Policy.Automatic;
 using Machine.Specifications;
 using DotNetRules.TestFramework;
 using DotNetRules.Tests.AcceptanceTest.Enviroment;
-using DotNetRules.Tests.AcceptanceTest.Enviroment.Policy;
 
 namespace DotNetRules.Tests.AcceptanceTest
 {
@@ -14,7 +13,7 @@ namespace DotNetRules.Tests.AcceptanceTest
     {
         class When_TargetDomainObject_is_valid
         {
-            static ExecutionTrace _result = new ExecutionTrace();
+            static ExecutionTrace _result = new ExecutionTrace(typeof(When_TargetDomainObject_is_valid).Assembly);
             static ExampleTargetObject _exampleTargetObject;
             static Exception exception;
 

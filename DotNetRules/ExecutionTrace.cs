@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace DotNetRules
 {
@@ -12,11 +13,23 @@ namespace DotNetRules
             By = executionTrace.By;
         }
 
+        public Assembly CurrentAssembly
+        {
+            get;
+            private set;
+        }
+
         public int Called { get; set; }
         public Queue<Type> By { get; set; }
         public bool WasConditionMetFor(Type policy)
         {
             return By.Any(_ => _ == policy);
+        }
+
+        public ExecutionTrace(Assembly currentAssembly)
+        {
+            CurrentAssembly = currentAssembly;
+            By = new Queue<Type>();
         }
     }
 
@@ -25,6 +38,11 @@ namespace DotNetRules
         public int Called { get; set; }
         public Queue<Type> By { get; set; }
         public T ReturnType { get; set; }
+
+        public Assembly CurrentAssembly
+        {
+            get; private set;
+        }
 
         public bool WasConditionMetFor(Type policy)
         {
@@ -38,13 +56,14 @@ namespace DotNetRules
 
         public static explicit operator ExecutionTrace(ExecutionTrace<T> trace)
         {
-            var executionTrace = new ExecutionTrace();
+            var executionTrace = new ExecutionTrace(trace.CurrentAssembly);
             executionTrace.Initalize(trace);
             return executionTrace;
         }
 
-        public ExecutionTrace()
+        public ExecutionTrace(Assembly currentAssembly)
         {
+            CurrentAssembly = currentAssembly;
             By = new Queue<Type>();
         }
     }
