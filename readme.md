@@ -46,3 +46,11 @@ Using a rule engine is fun, but most of the engines out there required a lot of 
         Return<bool> _return = () => _allowed;
     }
 
+## Use it
+Open your nuget console and do 
+> Install-Package DotNetRules
+
+or 
+
+> Install-Package DotNetRules.Web.Mvc
+
