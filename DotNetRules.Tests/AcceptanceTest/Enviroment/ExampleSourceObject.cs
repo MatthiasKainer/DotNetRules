@@ -1,3 +1,5 @@
+using DotNetRules.Runtime;
+
 namespace DotNetRules.Tests.AcceptanceTest.Enviroment
 {
     public class ExampleSourceObject

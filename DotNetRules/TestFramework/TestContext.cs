@@ -22,7 +22,7 @@ namespace DotNetRules.TestFramework
             _DotNetRulesContext.Establish(subject);
             if (_DotNetRulesContext.Given())
             {
-                _DotNetRulesContext.Then();
+                _DotNetRulesContext.Then(false);
             }
             _DotNetRulesContext.Finally();
             subject = _DotNetRulesContext.Return<TSubject>();
@@ -34,7 +34,7 @@ namespace DotNetRules.TestFramework
             _DotNetRulesContext.Establish(source, target);
             if (_DotNetRulesContext.Given())
             {
-                _DotNetRulesContext.Then();
+                _DotNetRulesContext.Then(false);
             }
             _DotNetRulesContext.Finally();
             source = _DotNetRulesContext.Return<TSource>();

@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -78,6 +80,33 @@ namespace DotNetRules.Runtime
         {
             invokeable.AllNonNull().Select<Then, Action>(x => x.Invoke).InvokeAll();
         }
+
+        public static IEnumerable<ExceptionInformation> InvokeAll(this IEnumerable<Then> invokeable, bool catchErrors)
+        {
+            if (!catchErrors)
+            {
+                invokeable.InvokeAll();
+                return new ExceptionInformation[0];
+            }
+            var errors = new List<ExceptionInformation>();
+            invokeable.AllNonNull().Select<Then, Action>(x => delegate {
+                try
+                {
+                    x.Invoke();
+                }
+                catch (Exception e0)
+                {
+                    SourceAttribute name;
+                    errors.Add(new ExceptionInformation { 
+                        Exception = e0, 
+                        Message = e0.Message, 
+                        Source = (name = (SourceAttribute)x.Method.GetCustomAttributes(typeof(SourceAttribute), true).FirstOrDefault()) == null ?
+                            x.Method.Name: 
+                            name.Name});
+                } 
+            }).InvokeAll();
+            return errors;
+        }
         
         public static void Each<T>(this IEnumerable<T> enumerable, Action<T> action)
         {
@@ -116,9 +145,20 @@ namespace DotNetRules.Runtime
 
                 var fields = target.GetInstanceFieldsOfType<T>();
 
-                foreach (var val in from field in fields where field != null select (T)field.GetValue(instance))
+                foreach (var val in from field in fields where field != null select new { value = (T)field.GetValue(instance), name = field.Name })
                 {
-                    items.Add(val);
+                    var @delegate = val.value as Delegate;
+                    if (@delegate != null)
+                    {
+                        var method = @delegate.Method;
+                        var fieldInfo = method.GetType().GetField("m_name",
+                                                                  BindingFlags.NonPublic |
+                                                                  BindingFlags.Instance);
+                        if (fieldInfo != null)
+                            fieldInfo.SetValue(method, val.name);
+                        Debug.WriteLine(method);
+                    }
+                    items.Add(val.value);
                 }
 
                 CollectDetailsOf(target.BaseType, () => instance, items);

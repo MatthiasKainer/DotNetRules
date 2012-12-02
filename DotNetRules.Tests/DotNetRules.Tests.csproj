@@ -51,6 +51,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -62,8 +63,10 @@
     <Compile Include="AcceptanceTest\Enviroment\ExampleSourceObject.cs" />
     <Compile Include="AcceptanceTest\Enviroment\Policy\Automatic\PolicyThatComparesTheVersion.cs" />
     <Compile Include="AcceptanceTest\Enviroment\Policy\Automatic\PolicyThatMapsTheSourceTextToAnArray.cs" />
+    <Compile Include="AcceptanceTest\Enviroment\Policy\Manual\PolicyThatsAlwaysReturningTrue.cs" />
     <Compile Include="AcceptanceTest\Enviroment\Policy\Automatic\PolicyThatThrowsAnExceptionIfSubjectVersionIsSmallerZero.cs" />
     <Compile Include="AcceptanceTest\Enviroment\Policy\Automatic\PolicyThatWaitsForPolicyThatMapsTheSourceTextToAnArray.cs" />
+    <Compile Include="AcceptanceTest\Enviroment\Policy\Manual\PolicyForMvcThatThrowsAnException.cs" />
     <Compile Include="AcceptanceTest\Enviroment\Policy\Manual\PolicyWithOrThatSetsSourceNumberToOne.cs" />
     <Compile Include="AcceptanceTest\Enviroment\Policy\Manual\PolicyWithReturnValueThatMapsSourceNumberToTargetInteger.cs" />
     <Compile Include="AcceptanceTest\Enviroment\ExampleTargetObject.cs" />
@@ -71,6 +74,7 @@
     <Compile Include="AcceptanceTest\OrCombination.cs" />
     <Compile Include="AcceptanceTest\RunAllPolicies.cs" />
     <Compile Include="AcceptanceTest\RunSpecificPolicy.cs" />
+    <Compile Include="AcceptanceTest\SetMvcModelState.cs" />
     <Compile Include="AcceptanceTest\SinglePolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -78,12 +82,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DotNetRules.Web.Mvc\DotNetRules.Web.Mvc.csproj">
+      <Project>{4C7C9378-FCA1-4D33-8FB0-C6658294C81D}</Project>
+      <Name>DotNetRules.Web.Mvc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotNetRules\DotNetRules.csproj">
       <Project>{19FF278C-8506-42F1-A766-9C958E716AFB}</Project>
-      <Name>UnobstrusivePolicy</Name>
+      <Name>DotNetRules</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

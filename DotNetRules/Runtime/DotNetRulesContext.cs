@@ -91,9 +91,9 @@ namespace DotNetRules.Runtime
             return !_orClauses.Any() ? _wasGiven : _orClauses.InvokeAll();
         }
 
-        public void Then()
+        public IEnumerable<ExceptionInformation> Then(bool catchException)
         {
-            _thenClauses.InvokeAll();
+            return _thenClauses.InvokeAll(catchException);
         }
 
         public void Finally()

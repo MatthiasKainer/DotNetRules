@@ -46,6 +46,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runtime\BasePolicy.cs" />
     <Compile Include="Runtime\Establish.cs" />
+    <Compile Include="Runtime\ExceptionInformation.cs" />
     <Compile Include="Runtime\Finally.cs" />
     <Compile Include="Runtime\Given.cs" />
     <Compile Include="Runtime\Helper.cs" />
@@ -54,8 +55,9 @@
     <Compile Include="Runtime\PolicyBase.cs" />
     <Compile Include="Runtime\RelationPolicyBase.cs" />
     <Compile Include="Runtime\Return.cs" />
+    <Compile Include="Runtime\SourceAttribute.cs" />
     <Compile Include="Runtime\Then.cs" />
-    <Compile Include="Runtime\UnobstrusivePolicyContext.cs" />
+    <Compile Include="Runtime\DotNetRulesContext.cs" />
     <Compile Include="TestFramework\Helpers.cs" />
     <Compile Include="TestFramework\TestContext.cs" />
   </ItemGroup>

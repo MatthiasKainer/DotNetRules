@@ -15,8 +15,7 @@ namespace DotNetRules
     {
         public static readonly Settings Settings  = new Settings { CatchExceptions = false };
 
-        public static List<Exception> Exceptions { get; private set; }
-
+        public static List<ExceptionInformation> Exceptions { get; private set; }
         
         public static ExecutionTrace ApplyPolicies<TSubject>(this TSubject subject, Assembly policyLocation = null, IEnumerable<Type> policies = null)
         {
@@ -54,10 +53,7 @@ namespace DotNetRules
             {
                 policyLocation = type.Assembly;
             }
-            if (Settings.CatchExceptions)
-            {
-                Exceptions = new List<Exception>();
-            }
+            Exceptions = new List<ExceptionInformation>();
 
             var executionTrace = new ExecutionTrace<TReturn>(policyLocation);
             foreach (var mon in policyLocation.GetTypesWithPolicyAttribute(policies.Any(), type)
@@ -94,10 +90,7 @@ namespace DotNetRules
             {
                 policyLocation = type.Assembly;
             }
-            if (Settings.CatchExceptions)
-            {
-                Exceptions = new List<Exception>();
-            }
+            Exceptions = new List<ExceptionInformation>();
 
             var executionTrace = new ExecutionTrace<TReturn>(policyLocation);
             foreach (var mon in policyLocation.GetTypesWithPolicyAttribute(policies.Any(), type, typeof(TTarget))
@@ -164,10 +157,7 @@ namespace DotNetRules
             {
                 policyLocation = types.First().Assembly;
             }
-            if (Settings.CatchExceptions)
-            {
-                Exceptions = new List<Exception>();
-            }
+            Exceptions = new List<ExceptionInformation>();
 
             var target = new ExecutionTrace<TReturn>(policyLocation);
             foreach (var mon in policyLocation.GetTypesWithPolicyAttribute(policies.Any(), types.ToArray())
@@ -194,21 +184,7 @@ namespace DotNetRules
 
         static void MonitorThen(DotNetRulesContext mon)
         {
-            if (Settings.CatchExceptions)
-            {
-                try
-                {
-                    mon.Then();
-                }
-                catch (Exception e0)
-                {
-                    Exceptions.Add(e0);
-                }
-            }
-            else
-            {
-                mon.Then();
-            }
+            Exceptions.AddRange(mon.Then(Settings.CatchExceptions)); 
         }
     }
 }
