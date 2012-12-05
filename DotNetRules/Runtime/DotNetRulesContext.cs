@@ -48,14 +48,24 @@ namespace DotNetRules.Runtime
 
         public void Establish<TSource, TTarget>(TSource source, TTarget target)
         {
-            foreach (var property in GetProperties<TSource>())
+            if (typeof(TSource) == typeof(TTarget))
             {
-                property.SetValue(_policy, source, null);
+                var sourceProperty = GetProperties<TSource>().FirstOrDefault(_ => _.Name.EndsWith("Source"));
+                if (sourceProperty != null) sourceProperty.SetValue(_policy, source, null);
+                var targetProperty = GetProperties<TTarget>().FirstOrDefault(_ => _.Name.EndsWith("Target"));
+                if (targetProperty != null) targetProperty.SetValue(_policy, target, null);
             }
-
-            foreach (var property in GetProperties<TTarget>())
+            else 
             {
-                property.SetValue(_policy, target, null);
+                foreach (var property in GetProperties<TSource>())
+                {
+                    property.SetValue(_policy, source, null);
+                }
+
+                foreach (var property in GetProperties<TTarget>())
+                {
+                    property.SetValue(_policy, target, null);
+                }
             }
 
             if (_establishClause != null)
