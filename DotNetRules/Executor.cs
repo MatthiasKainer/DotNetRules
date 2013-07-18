@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using DotNetRules.Runtime;
 
 namespace DotNetRules
@@ -16,7 +17,48 @@ namespace DotNetRules
         public static readonly Settings Settings  = new Settings { CatchExceptions = false };
 
         public static List<ExceptionInformation> Exceptions { get; private set; }
-        
+
+        static volatile Dictionary<string, List<object>> _types = new Dictionary<string, List<object>>();
+        static readonly object SyncRoot = new object();
+
+        [Experimental]
+        public static void RegisterObject<T>(T type)
+        {
+            var fullName = type.GetType().FullName;
+            if (string.IsNullOrEmpty(fullName))
+                throw new Exception("Only types with full names can be registered");
+            lock (SyncRoot)
+            {
+                if (!_types.ContainsKey(fullName))
+                {
+                    _types.Add(fullName, new List<object>());
+                }
+                _types[fullName].Add(type);
+            }
+
+        }
+
+        [Experimental]
+        public static IEnumerable<T> Resolve<T>()
+        {
+            var fullName = typeof(T).FullName;
+            if (string.IsNullOrEmpty(fullName))
+                throw new Exception("Only types with full names can be resolved");
+            return _types.ContainsKey(fullName) ? _types[fullName].Select(_ => (T) _) : new List<T>();
+        }
+
+        [Experimental]
+        public static void ExecuteOn<T>(Action<T> action)
+        {
+            Resolve<T>().ToList().ForEach(action);
+        }
+            
+        [Experimental]
+        public static void NotifyPolicies<TSubject>(this TSubject subject, Assembly policyLocation = null, IEnumerable<Type> policies = null)
+        {
+            new Task(() => Apply(subject, policyLocation, policies)).Start();
+        }
+
         public static ExecutionTrace ApplyPolicies<TSubject>(this TSubject subject, Assembly policyLocation = null, IEnumerable<Type> policies = null)
         {
             return Apply(subject, policyLocation, policies);

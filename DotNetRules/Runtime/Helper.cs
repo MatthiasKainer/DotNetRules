@@ -39,53 +39,58 @@ namespace DotNetRules.Runtime
             Cache.Clear();
         }
         
+        private static readonly object PolicyTypeCacheLock = new object();
+
         public static Queue<Type> GetTypesWithPolicyAttribute(this Assembly assembly, bool onlyIfSpecified = false, params Type[] target)
         {
             var cacheKey = string.Concat(assembly.FullName, onlyIfSpecified, string.Join("-", target.Select(_ => _.FullName)));
 
-            if (Cache.ContainsKey(cacheKey))
+            lock (PolicyTypeCacheLock)
             {
-                return Cache[cacheKey];
-            }
-
-            var queueTypes = new Queue<Type>();
-            try
-            {
-                var types = assembly.GetTypes().Where(type => type.GetCustomAttributes(typeof(PolicyAttribute), true).Length > 0);
-                var unBlockedTypeSets = new List<Type>();
-                var blockedTypeSets = new Dictionary<PolicyAttribute, Type>();
-                foreach (var type in types)
+                if (Cache.ContainsKey(cacheKey))
                 {
-                    var policyAttribute = (PolicyAttribute)type.GetCustomAttributes(typeof(PolicyAttribute), true).FirstOrDefault();
-                    if (policyAttribute == null || (policyAttribute.Types != null && (!target.All(policyAttribute.Types.Contains) || !policyAttribute.Types.All(target.Contains)))) continue;
-                    if (!policyAttribute.AutoExecute && !onlyIfSpecified) continue;
+                    return Cache[cacheKey];
+                }
 
-                    if (policyAttribute.WaitFor == null)
+                var queueTypes = new Queue<Type>();
+                try
+                {
+                    var types = assembly.GetTypes().Where(type => type.GetCustomAttributes(typeof(PolicyAttribute), true).Length > 0);
+                    var unBlockedTypeSets = new List<Type>();
+                    var blockedTypeSets = new Dictionary<PolicyAttribute, Type>();
+                    foreach (var type in types)
                     {
-                        unBlockedTypeSets.Add(type);
+                        var policyAttribute = (PolicyAttribute)type.GetCustomAttributes(typeof(PolicyAttribute), true).FirstOrDefault();
+                        if (policyAttribute == null || (policyAttribute.Types != null && (!target.All(policyAttribute.Types.Contains) || !policyAttribute.Types.All(target.Contains)))) continue;
+                        if (!policyAttribute.AutoExecute && !onlyIfSpecified) continue;
+
+                        if (policyAttribute.WaitFor == null)
+                        {
+                            unBlockedTypeSets.Add(type);
+                        }
+                        else
+                        {
+                            blockedTypeSets.Add(policyAttribute, type);
+                        }
                     }
-                    else
+                    unBlockedTypeSets.OrderBy(_ => _.Name);
+                    foreach (var item in unBlockedTypeSets)
                     {
-                        blockedTypeSets.Add(policyAttribute, type);
+                        queueTypes.Enqueue(item);
+                        var store = item;
+                        foreach (var type in blockedTypeSets.Where(_ => _.Key.WaitFor == store))
+                        {
+                            queueTypes.Enqueue(type.Value);
+                        }
                     }
                 }
-                unBlockedTypeSets.OrderBy(_ => _.Name);
-                foreach (var item in unBlockedTypeSets)
+                catch
                 {
-                    queueTypes.Enqueue(item);
-                    var store = item;
-                    foreach (var type in blockedTypeSets.Where(_ => _.Key.WaitFor == store))
-                    {
-                        queueTypes.Enqueue(type.Value);
-                    }
                 }
-            }
-            catch
-            {
-            }
 
-            Cache.Add(cacheKey, queueTypes);
-            return queueTypes;
+                Cache.Add(cacheKey, queueTypes);
+                return queueTypes;
+            }
         }
 
         public static bool InvokeAll(this IEnumerable<Or> invokeable)

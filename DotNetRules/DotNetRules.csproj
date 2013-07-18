@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="ExecutionTrace.cs" />
     <Compile Include="Executor.cs" />
+    <Compile Include="ExperimentalAttribute.cs" />
     <Compile Include="IExecutionTrace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runtime\BasePolicy.cs" />
