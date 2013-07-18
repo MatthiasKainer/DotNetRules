@@ -48,17 +48,17 @@ namespace DotNetRules
             {
                 policies = Enumerable.Empty<Type>();
             }
+
             var type = (typeof(TSubject));
-            if (policyLocation == null)
-            {
-                policyLocation = type.Assembly;
-            }
+            var policyLocations = RetrievePolicyLocations(ref policyLocation, policies, type);
+
             Exceptions = new List<ExceptionInformation>();
 
             var executionTrace = new ExecutionTrace<TReturn>(policyLocation);
-            foreach (var mon in policyLocation.GetTypesWithPolicyAttribute(policies.Any(), type)
-                .Select(item => new DotNetRulesContext(item))
-                .Where(_ => (!policies.Any()) || policies.Any(type1 => type1 == _.CurrentPolicy)))
+
+            foreach (var mon in policyLocations.SelectMany(location => location.GetTypesWithPolicyAttribute(policies.Any(), type)
+                                                                           .Select(item => new DotNetRulesContext(item))
+                                                                           .Where(_ => (!policies.Any()) || policies.Any(type1 => type1 == _.CurrentPolicy))))
             {
                 mon.Establish(subject);
                 if (mon.Given() || mon.Or())
@@ -71,6 +71,7 @@ namespace DotNetRules
                 mon.Finally();
                 executionTrace.ReturnType = mon.Return<TReturn>();
             }
+
             return executionTrace;
         }
 
@@ -86,16 +87,14 @@ namespace DotNetRules
                 policies = Enumerable.Empty<Type>();
             }
             var type = (typeof(TSource));
-            if (policyLocation == null)
-            {
-                policyLocation = type.Assembly;
-            }
+            var policyLocations = RetrievePolicyLocations(ref policyLocation, policies, type);
             Exceptions = new List<ExceptionInformation>();
 
             var executionTrace = new ExecutionTrace<TReturn>(policyLocation);
-            foreach (var mon in policyLocation.GetTypesWithPolicyAttribute(policies.Any(), type, typeof(TTarget))
-                .Select(item => new DotNetRulesContext(item))
-                .Where(_ => !policies.Any() || policies.Any(type1 => type1 == _.CurrentPolicy)))
+
+            foreach (var mon in policyLocations.SelectMany(location => location.GetTypesWithPolicyAttribute(policies.Any(), type, typeof (TTarget))
+                                                                           .Select(item => new DotNetRulesContext(item))
+                                                                           .Where(_ => !policies.Any() || policies.Any(type1 => type1 == _.CurrentPolicy))))
             {
                 mon.Establish(source, target);
                 if (mon.Given() || mon.Or())
@@ -185,6 +184,21 @@ namespace DotNetRules
         static void MonitorThen(DotNetRulesContext mon)
         {
             Exceptions.AddRange(mon.Then(Settings.CatchExceptions)); 
+        }
+
+        static IEnumerable<Assembly> RetrievePolicyLocations(ref Assembly policyLocation, IEnumerable<Type> policies, Type type)
+        {
+            var policyLocations = new List<Assembly>();
+            if (policyLocation == null)
+            {
+                policyLocations = policies.Any() ? policies.Select(_ => _.Assembly).Distinct().ToList() : AppDomain.CurrentDomain.GetAssemblies().ToList();
+                policyLocation = type.Assembly;
+            }
+            else
+            {
+                policyLocations.Add(policyLocation);
+            }
+            return policyLocations;
         }
     }
 }

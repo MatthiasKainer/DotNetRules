@@ -32,37 +32,59 @@ namespace DotNetRules.Runtime
             return GetInstanceFields(type).Where(fieldInfo => fieldInfo.FieldType == targetType);
         }
 
-        public static Queue<Type> GetTypesWithPolicyAttribute(this Assembly assembly, bool selected = false, params Type[] target)
-        {
-            var types = assembly.GetTypes().Where(type => type.GetCustomAttributes(typeof(PolicyAttribute), true).Length > 0);
-            var queueTypes = new Queue<Type>();
-            var unBlockedTypeSets = new List<Type>();
-            var blockedTypeSets = new Dictionary<PolicyAttribute, Type>();
-            foreach (var type in types)
-            {
-                var policyAttribute = (PolicyAttribute) type.GetCustomAttributes(typeof (PolicyAttribute), true).FirstOrDefault();
-                if (policyAttribute == null || (policyAttribute.Types != null && (!target.All(policyAttribute.Types.Contains) || !policyAttribute.Types.All(target.Contains)))) continue;
-                if (!policyAttribute.AutoExecute && !selected) continue;
+        static readonly Dictionary<string, Queue<Type>> Cache = new Dictionary<string, Queue<Type>>();
 
-                if (policyAttribute.WaitFor == null)
-                {
-                    unBlockedTypeSets.Add(type);
-                }
-                else
-                {
-                    blockedTypeSets.Add(policyAttribute, type);
-                }
-            }
-            unBlockedTypeSets.OrderBy(_ => _.Name);
-            foreach (var item in unBlockedTypeSets)
+        public static void InvalidateCache()
+        {
+            Cache.Clear();
+        }
+        
+        public static Queue<Type> GetTypesWithPolicyAttribute(this Assembly assembly, bool onlyIfSpecified = false, params Type[] target)
+        {
+            var cacheKey = string.Concat(assembly.FullName, onlyIfSpecified, string.Join("-", target.Select(_ => _.FullName)));
+
+            if (Cache.ContainsKey(cacheKey))
             {
-                queueTypes.Enqueue(item);
-                var store = item;
-                foreach (var type in blockedTypeSets.Where(_ => _.Key.WaitFor == store))
+                return Cache[cacheKey];
+            }
+
+            var queueTypes = new Queue<Type>();
+            try
+            {
+                var types = assembly.GetTypes().Where(type => type.GetCustomAttributes(typeof(PolicyAttribute), true).Length > 0);
+                var unBlockedTypeSets = new List<Type>();
+                var blockedTypeSets = new Dictionary<PolicyAttribute, Type>();
+                foreach (var type in types)
                 {
-                    queueTypes.Enqueue(type.Value);
+                    var policyAttribute = (PolicyAttribute)type.GetCustomAttributes(typeof(PolicyAttribute), true).FirstOrDefault();
+                    if (policyAttribute == null || (policyAttribute.Types != null && (!target.All(policyAttribute.Types.Contains) || !policyAttribute.Types.All(target.Contains)))) continue;
+                    if (!policyAttribute.AutoExecute && !onlyIfSpecified) continue;
+
+                    if (policyAttribute.WaitFor == null)
+                    {
+                        unBlockedTypeSets.Add(type);
+                    }
+                    else
+                    {
+                        blockedTypeSets.Add(policyAttribute, type);
+                    }
+                }
+                unBlockedTypeSets.OrderBy(_ => _.Name);
+                foreach (var item in unBlockedTypeSets)
+                {
+                    queueTypes.Enqueue(item);
+                    var store = item;
+                    foreach (var type in blockedTypeSets.Where(_ => _.Key.WaitFor == store))
+                    {
+                        queueTypes.Enqueue(type.Value);
+                    }
                 }
             }
+            catch
+            {
+            }
+
+            Cache.Add(cacheKey, queueTypes);
             return queueTypes;
         }
 
